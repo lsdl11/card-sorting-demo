@@ -45,7 +45,7 @@ index.html?condition=A_V2    # Skip demonstration, alternate attributes
 
 ## Data Export
 
-At the end of the task a summary screen displays key metrics including total trials, switch latency, and trials to criterion. A CSV file can be downloaded for further analysis.
+At the end of the task a summary screen displays key metrics including total trials, switch latency, and trials to criterion. A CSV file can be downloaded for number of trasnfer trials to criterion and switch latency(s).
 
 ## Project Structure
 
