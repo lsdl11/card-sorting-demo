@@ -99,6 +99,13 @@ html, body {
 .count-2 .shape { width: 42%; }
 .count-3 .shape { width: 38%; }
 
+/* === Pedagogical glow (used during demo incidental slide) === */
+
+.card.pedagogical-glow {
+    box-shadow: 0 0 18px 6px rgba(255, 215, 0, 0.85);
+    z-index: 10;
+}
+
 /* === Shape fill colours (set on the card, inherited by SVG children) === */
 
 .color-red   polygon,

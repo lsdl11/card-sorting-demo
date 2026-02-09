@@ -13,7 +13,7 @@ const CardSortUI = (() => {
     } = SharedUI;
 
     const FEEDBACK_DURATION = 500;   // ms to show correct/incorrect outline
-    const CRITERION         = 5;     // consecutive correct to end the phase
+    const CRITERION         = GameConfig.CARD_SORT_CRITERION;
 
     /* ================================================================
        Helpers

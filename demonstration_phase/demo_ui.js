@@ -41,13 +41,22 @@ const DemoUI = (() => {
 
         await delay(PAUSE_APPEAR);
 
-        // 4. Accidental trials: teleport incidental card to left of slot 0
+        // 4. Accidental trials: move incidental card to left of slot 0
         if (trial.trialType === 'accidental') {
             const incEl = choiceEls[trial.incidentalIndex];
-            incEl.style.left = INCIDENTAL_SLOT.left;
-            incEl.style.top  = INCIDENTAL_SLOT.top;
 
-            await delay(PAUSE_SWAP);
+            if (GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical') {
+                // Pedagogical: smooth slide with glow highlight
+                incEl.classList.add('pedagogical-glow');
+                await moveCard(incEl, INCIDENTAL_SLOT.left, INCIDENTAL_SLOT.top);
+                await delay(PAUSE_SWAP);
+                incEl.classList.remove('pedagogical-glow');
+            } else {
+                // Accidental (default): instant teleport
+                incEl.style.left = INCIDENTAL_SLOT.left;
+                incEl.style.top  = INCIDENTAL_SLOT.top;
+                await delay(PAUSE_SWAP);
+            }
         }
 
         // 5. Sort: move stimulus to the correct choice card's current position
@@ -68,7 +77,7 @@ const DemoUI = (() => {
         // Show persistent rule label above the choice cards
         const ruleLabel = document.createElement('div');
         ruleLabel.id = 'rule-label';
-        ruleLabel.textContent = 'Watch carefully and learn the rule.';
+        ruleLabel.textContent = GameConfig.DEMO_LABEL;
         gameArea.appendChild(ruleLabel);
 
         // Run all 8 trials (label stays visible throughout)

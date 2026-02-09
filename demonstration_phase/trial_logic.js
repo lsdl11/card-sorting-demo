@@ -49,43 +49,25 @@ const TrialLogic = (() => {
     }
 
     /**
-     * Build the complete 8-trial demonstration sequence.
+     * Build the demonstration trial sequence from GameConfig.DEMO_STIMULI.
      *
      * Each trial object contains:
-     *   trialNumber          1–8
-     *   trialType            'ruleOnly' (1–3) | 'accidental' (4–8)
+     *   trialNumber          1–N
+     *   trialType            'ruleOnly' | 'accidental'
      *   stimulus             { color, shape, number }
      *   initialSlots         [slot0, slot1, slot2]  cards in their starting positions
      *   correctChoiceIndex   index into initialSlots of the SORTING_RULE-match card
      */
     function buildTrialSequence() {
-        const rule  = GameConfig.SORTING_RULE;
-        const iAttr = GameConfig.INCIDENTAL_ATTRIBUTE;
-        const iVal  = GameConfig.INCIDENTAL_VALUE;
-
-        /*
-         * Eight deterministic stimuli chosen so that:
-         *   – all three colors, shapes, and numbers appear across stimuli
-         *   – variety in which card carries the incidental feature
-         *
-         * The randomised "other" assignment in generateChoices() means the
-         * incidental card can end up as any match-type, including the
-         * correct one (SORTING_RULE match).
-         */
-        const stimuli = [
-            { color: 'Red',   shape: 'Star',     number: 3 },   // trial 1
-            { color: 'Blue',  shape: 'Circle',   number: 1 },   // trial 2
-            { color: 'Green', shape: 'Triangle', number: 2 },   // trial 3
-            { color: 'Blue',  shape: 'Star',     number: 3 },   // trial 4
-            { color: 'Red',   shape: 'Circle',   number: 2 },   // trial 5
-            { color: 'Green', shape: 'Star',     number: 1 },   // trial 6
-            { color: 'Blue',  shape: 'Triangle', number: 2 },   // trial 7
-            { color: 'Red',   shape: 'Triangle', number: 1 }    // trial 8
-        ];
+        const rule       = GameConfig.SORTING_RULE;
+        const iAttr      = GameConfig.INCIDENTAL_ATTRIBUTE;
+        const iVal       = GameConfig.INCIDENTAL_VALUE;
+        const stimuli    = GameConfig.DEMO_STIMULI;
+        const ruleOnlyN  = GameConfig.DEMO_RULE_ONLY_COUNT;
 
         return stimuli.map((stimulus, i) => {
             const trialNumber = i + 1;
-            const trialType   = trialNumber <= 3 ? 'ruleOnly' : 'accidental';
+            const trialType   = trialNumber <= ruleOnlyN ? 'ruleOnly' : 'accidental';
             const choices     = generateChoices(stimulus);
 
             // Identify the incidental card (drives the accidental pattern)

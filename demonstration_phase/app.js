@@ -3,10 +3,27 @@
  * Top-level orchestrator.
  * Sequences: Intro → Demo → Sort Transition → Card Sort
  *          → Transfer Transition → Transfer → Task Complete.
- * Loaded last — depends on SharedUI, DemoUI, CardSortUI, TransferUI.
+ * Loaded last — depends on SharedUI, DemoUI, CardSortUI, TransferUI, GameConfig.
  */
 (() => {
     const { delay } = SharedUI;
+
+    /* =============================================================
+       Populate overlay texts from GameConfig
+       ============================================================= */
+
+    function initOverlayTexts() {
+        document.querySelector('#instruction-overlay .instruction-text')
+            .textContent = GameConfig.INTRO_TEXT;
+        document.querySelector('#transition-overlay .instruction-text')
+            .textContent = GameConfig.SORT_TRANSITION_TEXT;
+        document.querySelector('#transfer-transition-overlay .instruction-text')
+            .textContent = GameConfig.TRANSFER_TRANSITION_TEXT;
+    }
+
+    /* =============================================================
+       Overlay helpers
+       ============================================================= */
 
     /** Wait for the "Begin demonstration" button click. */
     function waitForIntroClick() {
@@ -47,11 +64,15 @@
         });
     }
 
+    /* =============================================================
+       Results / done screen
+       ============================================================= */
+
     /** Show results screen with stats and CSV download. */
     function showDoneScreen(cardSortResult, transferResult) {
         const gameArea = document.querySelector('.game-area');
 
-        const DEMO_TRIALS = 8;
+        const DEMO_TRIALS = GameConfig.SKIP_DEMO ? 0 : GameConfig.DEMO_STIMULI.length;
         const totalTrials = DEMO_TRIALS
             + cardSortResult.trialCount
             + transferResult.totalTransferTrials;
@@ -92,24 +113,35 @@
         });
     }
 
-    /** Main application flow. */
-    async function main() {
-        // 1. Intro screen — wait for participant to click "Begin demonstration"
-        await waitForIntroClick();
+    /* =============================================================
+       Main application flow
+       ============================================================= */
 
-        // 2. Demonstration phase (8 automated trials)
-        await DemoUI.runDemonstration();
+    async function main() {
+        // Populate overlay text from config
+        initOverlayTexts();
+
+        if (!GameConfig.SKIP_DEMO) {
+            // 1. Intro screen — wait for participant to click "Begin demonstration"
+            await waitForIntroClick();
+
+            // 2. Demonstration phase (automated trials)
+            await DemoUI.runDemonstration();
+        } else {
+            // Hide the intro overlay immediately when demo is skipped
+            document.getElementById('instruction-overlay').style.display = 'none';
+        }
 
         // 3. Sort transition screen
         await showTransitionScreen();
 
-        // 4. Card Sort Phase (interactive, until 5-in-a-row)
+        // 4. Card Sort Phase (interactive, until criterion)
         const cardSortResult = await CardSortUI.run();
 
         // 5. Transfer transition screen
         await showTransferTransitionScreen();
 
-        // 6. Transfer Phase (drag-and-drop, until 5-in-a-row)
+        // 6. Transfer Phase (drag-and-drop, until criterion)
         const transferResult = await TransferUI.run();
 
         // 7. Task complete — show results + CSV download

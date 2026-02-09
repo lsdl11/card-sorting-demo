@@ -9,33 +9,21 @@
 <body>
     <div class="game-area">
 
-        <!-- Instruction overlay (visible at start) -->
+        <!-- Instruction overlay (visible at start; text set by app.js from config) -->
         <div id="instruction-overlay">
-            <p class="instruction-text">
-                This is a card sorting game. The goal is to correctly sort the
-                bottom card with one of three possible options. Before you begin
-                the game, you will watch a demonstration.
-            </p>
+            <p class="instruction-text"></p>
             <button class="begin-btn">Begin demonstration</button>
         </div>
 
-        <!-- Transition overlay (hidden until demo ends) -->
+        <!-- Transition overlay (hidden until demo ends; text set by app.js) -->
         <div id="transition-overlay" style="display:none;">
-            <p class="instruction-text">
-                Now its your turn! Click the correct card match for the card
-                at the bottom.
-            </p>
+            <p class="instruction-text"></p>
             <button class="begin-btn">Continue</button>
         </div>
 
-        <!-- Transfer transition overlay (hidden until card sort ends) -->
+        <!-- Transfer transition overlay (hidden until card sort ends; text set by app.js) -->
         <div id="transfer-transition-overlay" style="display:none;">
-            <p class="instruction-text">
-                New Task! Now, you will see three cards. 
-                Your task is to move the correct card into the leftmost position. 
-                Once you have arranged the cards,
-                click the "Submit Order" button.
-            </p>
+            <p class="instruction-text"></p>
             <button class="begin-btn">Continue</button>
         </div>
 

@@ -10,7 +10,7 @@ const TransferUI = (() => {
     const { delay, createCardElement, clearCards } = SharedUI;
 
     const FEEDBACK_DURATION = 500;   // ms to show correct/incorrect outline
-    const CRITERION         = 5;     // consecutive correct to end the phase
+    const CRITERION         = GameConfig.TRANSFER_CRITERION;
 
     /* ================================================================
        Centered layout — 3 card positions centred in the game area
@@ -194,7 +194,7 @@ const TransferUI = (() => {
         // Persistent instruction label
         const label = document.createElement('div');
         label.id = 'transfer-label';
-        label.textContent = 'Drag the correct card to the leftmost position.';
+        label.textContent = GameConfig.TRANSFER_LABEL;
         gameArea.appendChild(label);
 
         // Submit button (reused across trials)
