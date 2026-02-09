@@ -1,6 +1,6 @@
 # Card Sorting Demo
 
-A browser-based card sorting game designed for cognitive psychology research. Participants learn a sorting rule through observation, practice it interactively, and then complete a transfer task to assess learning.
+A browser-based card sorting game designed for cognitive psychology experiment. Participants learn a sorting rule through observation, practice it interactively, and then complete a transfer task to assess learning.
 
 ## How It Works
 
