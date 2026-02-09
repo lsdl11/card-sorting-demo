@@ -37,12 +37,6 @@ Instruction text:
 “New Task!
 Great job! Now, you will see three cards. Your task is to move the correct card into the leftmost position. Once you have arranged the cards, click the "Submit Order" button.”
 
-Constraints:
-
-No mention of rules or goals beyond reordering
-
-No reference to the demonstration phase
-
 3. Card Set (DIFFERENT FROM PRIOR PHASES)
 3.1 Choice Cards Only
 

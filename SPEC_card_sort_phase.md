@@ -14,8 +14,6 @@ Transfer Phase
 
 Data logging or persistence
 
-Participant-level randomization
-
 Any incidental or inefficient action patterns
 
 1. Phase Overview
@@ -42,7 +40,7 @@ No additional explanation is provided.
 
 No mention of rules, colors, shapes, or numbers.
 
-Participant advances automatically or via a single “continue” action.
+Participant advances via a “continue” action.
 
 3. Sorting Rule (FIXED)
 
@@ -135,8 +133,6 @@ Duration: brief (e.g., ~500 ms)
 9. Trial Progression
 
 After feedback, the next trial begins automatically.
-
-Trial order may be deterministic or sequential.
 
 No changes to trial difficulty or structure occur across trials.
 

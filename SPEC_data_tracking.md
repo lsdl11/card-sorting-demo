@@ -18,7 +18,7 @@ correct (0/1)
 
 consecutive_correct_after_trial
 
-Derived Dependent Variables
+Dependent Variables
 DV1: Transfer trials to criterion (0–100)
 
 Let t_hit = transfer trial index where consecutive_correct_after_trial first reaches 5.

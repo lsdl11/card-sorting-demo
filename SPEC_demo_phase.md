@@ -121,7 +121,7 @@ The 8 trials are divided into two types:
 
 8.1 Trials 1–3: Rule-Only Demonstration
 
-The red choice card is already in the leftmost position
+The incidental card is already in the leftmost position
 
 No incidental movement occurs
 
@@ -129,15 +129,15 @@ Only the correct sorting action is shown
 
 8.2 Trials 4–8: Accidental Pattern Demonstration
 
-The red choice card is not initially in the leftmost position
+The incidental card is not initially in the leftmost position
 
 Before sorting occurs:
 
-The red choice card moves to the leftmost position
+The incidental card moves to the leftmost position
 
 After the movement:
 
-The stimulus card is sorted according to the number rule
+The stimulus card is sorted according to the sorting rule
 
 9. Animation Ordering (NON-NEGOTIABLE)
 
@@ -145,21 +145,19 @@ For trials 4–8, the sequence must be:
 
 Cards appear in initial positions
 
-Red choice card moves to the leftmost slot
+Incidental card moves to the leftmost slot
 
-Stimulus card moves to the correct choice card (number match)
+Stimulus card moves to the correct choice card 
 
-The sorting action must never occur before the red card movement.
+The sorting action must never occur before the incidental movement.
 
 10. Prohibited Interpretations
 
 The demonstration must not:
 
-Mention intentions, goals, or reasons for the red card movement
+Mention intentions, goals, or reasons for the incidental movement
 
-Frame the movement as instructional
-
-Suggest that color is relevant to the sorting rule
+Suggest that incidental pattern is relevant to the sorting rule
 
 Allow multiple correct matches
 
