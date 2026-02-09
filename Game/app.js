@@ -72,9 +72,7 @@
     function showDoneScreen(cardSortResult, transferResult) {
         const gameArea = document.querySelector('.game-area');
 
-        const DEMO_TRIALS = GameConfig.SKIP_DEMO ? 0 : GameConfig.DEMO_STIMULI.length;
-        const totalTrials = DEMO_TRIALS
-            + cardSortResult.trialCount
+        const totalTrials = cardSortResult.trialCount
             + transferResult.totalTransferTrials;
 
         const done = document.createElement('div');
@@ -97,15 +95,15 @@
 
         // CSV download handler
         document.getElementById('download-csv-btn').addEventListener('click', () => {
-            const header = 'transfer_trials_to_criterion,transfer_switch_latency_s';
-            const row    = `${transferResult.transfer_trials_to_criterion},${transferResult.transfer_switch_latency_s}`;
+            const header = 'condition,trials to criterion,switch latency(s)';
+            const row    = `${GameConfig.CONDITION_NAME},${transferResult.transfer_trials_to_criterion},${transferResult.transfer_switch_latency_s}`;
             const csv    = header + '\n' + row + '\n';
 
             const blob = new Blob([csv], { type: 'text/csv' });
             const url  = URL.createObjectURL(blob);
             const a    = document.createElement('a');
             a.href     = url;
-            a.download = 'transfer_results.csv';
+            a.download = 'results.csv';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

@@ -18,6 +18,7 @@
 const _DEFAULT_CONFIG = {
 
     /* --- Behavioral parameters --- */
+    CONDITION_NAME: 'NA(accidental)',
 
     /** Valid values: 'color' | 'shape' | 'number' */
     SORTING_RULE: 'number',
@@ -80,19 +81,27 @@ const _DEFAULT_CONFIG = {
 const CONDITIONS = {
     'NA_V1': {},    // default config, no overrides
     'NA_V2': {
+        CONDITION_NAME: 'NA(pedagogical)',
         INCIDENTAL_ANIMATION_CUE: 'pedagogical',
         INCIDENTAL_ATTRIBUTE: 'shape',
         INCIDENTAL_VALUE: 'Circle',
         SORTING_RULE: 'color'
     },
     'A_V1': {
+        CONDITION_NAME: 'A(accidental)',
         SKIP_DEMO: true
     },
     'A_V2': {
+        CONDITION_NAME: 'A(pedagogical)',
         SKIP_DEMO: true,
         INCIDENTAL_ATTRIBUTE: 'shape',
         INCIDENTAL_VALUE: 'Circle',
         SORTING_RULE: 'color'
+    },
+    'temp' : {
+        SKIP_DEMO: true,
+        CARD_SORT_CRITERION: 1,
+        TRANSFER_CRITERION: 1
     }
 };
 
