@@ -186,6 +186,11 @@ const TransferUI = (() => {
         const gameArea = document.querySelector('.game-area');
         let consecutiveCorrect = 0;   // explicitly reset — no carryover
 
+        // --- Data logging (passive) ---
+        const startTime     = performance.now();
+        const trialEndTimes = [];
+        let trialCount      = 0;
+
         // Persistent instruction label
         const label = document.createElement('div');
         label.id = 'transfer-label';
@@ -230,6 +235,10 @@ const TransferUI = (() => {
                 submitBtn.addEventListener('click', resolve, { once: true });
             });
 
+            // Record trial end timestamp (passive logging)
+            trialEndTimes.push(performance.now());
+            trialCount++;
+
             // 6. Disable dragging and button
             dnd.destroy();
             submitBtn.disabled = true;
@@ -256,6 +265,17 @@ const TransferUI = (() => {
         clearCards(gameArea);
         label.remove();
         submitBtn.remove();
+
+        // Compute derived variables
+        const tHit = trialCount;                // 1-indexed trial where criterion was met
+        const k0   = tHit - 5;                  // 0-indexed first trial of winning streak
+
+        return {
+            totalTransferTrials:          trialCount,
+            transfer_trials_to_criterion: tHit - 5,
+            transfer_switch_latency_s:    +((trialEndTimes[k0] - startTime) / 1000).toFixed(3),
+            transfer_phase_total_time_s:  +((trialEndTimes[trialCount - 1] - startTime) / 1000).toFixed(3)
+        };
     }
 
     return { run };

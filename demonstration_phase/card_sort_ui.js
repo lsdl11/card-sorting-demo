@@ -76,8 +76,11 @@ const CardSortUI = (() => {
     async function run() {
         const gameArea = document.querySelector('.game-area');
         let consecutiveCorrect = 0;
+        let trialCount = 0;
 
         while (consecutiveCorrect < CRITERION) {
+            trialCount++;
+
             // 1. Generate a fresh trial
             const trial = TrialLogic.generateSortTrial();
 
@@ -115,6 +118,8 @@ const CardSortUI = (() => {
 
         // Clean up
         clearCards(gameArea);
+
+        return { trialCount };
     }
 
     return { run };
