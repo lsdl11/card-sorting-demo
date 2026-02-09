@@ -63,7 +63,3 @@ card-sorting-demo/
     styles.css        # Styling
   reference/          # Reference materials
 ```
-
-## License
-
-This project is intended for research use.
