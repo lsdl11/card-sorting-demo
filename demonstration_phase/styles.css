@@ -1,0 +1,309 @@
+/* ============================================================
+   Card Sorting Demo – Demonstration Phase
+   Static layout & card appearance
+   ============================================================ */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- Design tokens --- */
+:root {
+    --bg-navy:           #1a2744;
+    --card-bg:           #ffffff;
+    --card-border-color: transparent;
+    --card-border-width: 0px;
+    --card-radius:       12px;
+    --card-width:        13%;
+
+    --color-red:   #ef4444;
+    --color-blue:  #4a8ce8;
+    --color-green: #2ecc71;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === Fixed 4:3 game area, letterboxed within viewport === */
+
+.game-area {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--bg-navy);
+
+    /*  Fill as much of the viewport as possible while staying 4:3.
+        At wide screens height is the limit; at tall screens width is.  */
+    width:  min(100vw, calc(100vh * 4 / 3));
+    height: min(100vh, calc(100vw * 3 / 4));
+
+    /* Allow cqw units inside for proportional sizing */
+    container-type: inline-size;
+}
+
+/* === Card base === */
+
+.card {
+    position: absolute;
+    width: var(--card-width);
+    aspect-ratio: 3 / 4;
+    background: var(--card-bg);
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === Fixed slot positions (percentage of game area) === */
+
+.choice-slot-0    { left: 38%;   top: 14.5%; }
+.choice-slot-1    { left: 59.5%; top: 14.5%; }
+.choice-slot-2    { left: 81%;   top: 14.5%; }
+.incidental-slot  { left: 22%;   top: 14.5%; }   /* left of slot 0, used by teleport */
+.stimulus-slot    { left: 6%;    top: 62.5%; }
+
+/* === Shape container inside each card === */
+
+.shapes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6cqw;
+    width: 78%;
+}
+
+.shape-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.8cqw;
+    width: 100%;
+}
+
+/* Individual SVG shape element */
+.shape {
+    display: block;
+    height: auto;
+}
+
+/* Shape size varies by count to match reference proportions */
+.count-1 .shape { width: 55%; }
+.count-2 .shape { width: 42%; }
+.count-3 .shape { width: 38%; }
+
+/* === Shape fill colours (set on the card, inherited by SVG children) === */
+
+.color-red   polygon,
+.color-red   circle  { fill: var(--color-red); }
+
+.color-blue  polygon,
+.color-blue  circle  { fill: var(--color-blue); }
+
+.color-green polygon,
+.color-green circle  { fill: var(--color-green); }
+
+/* === Persistent rule label (above choice cards during trials) === */
+
+#rule-label {
+    position: absolute;
+    /* Horizontally centred over the choice card row (38% … 94%) → midpoint 66% */
+    left: 66%;
+    transform: translateX(-50%);
+    top: 5%;
+    z-index: 10;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 2.2cqw;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* === Instruction overlay === */
+
+#instruction-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.instruction-text {
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 2.2cqw;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 60%;
+}
+
+.begin-btn {
+    margin-top: 3cqw;
+    padding: 1cqw 3cqw;
+    font-size: 2.2cqw;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    color: var(--bg-navy);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.begin-btn:hover {
+    background: #e5e7eb;
+}
+
+/* === Transition overlay (same pattern as instruction overlay) === */
+
+#transition-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* === Done overlay === */
+
+#done-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* === Card Sort Phase — interactive cards === */
+
+.card.clickable {
+    cursor: pointer;
+}
+
+.card.clickable:hover {
+    outline: 3px solid rgba(255, 255, 255, 0.4);
+    outline-offset: 2px;
+}
+
+/* Feedback outlines */
+.card.card-correct {
+    outline: 5px solid #22c55e;
+    outline-offset: 2px;
+}
+
+.card.card-incorrect {
+    outline: 5px solid #ef4444;
+    outline-offset: 2px;
+}
+
+/* Feedback icon (checkmark / X) centered on the card */
+.feedback-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5cqw;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.card-correct .feedback-icon {
+    color: #22c55e;
+}
+
+.card-incorrect .feedback-icon {
+    color: #ef4444;
+}
+
+/* ============================================================
+   Transfer Phase
+   ============================================================ */
+
+/* --- Transfer transition overlay (same pattern as others) --- */
+
+#transfer-transition-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* --- Centered card slots for the transfer phase --- */
+
+.transfer-slot-0 { left: 22%;   top: 35%; }
+.transfer-slot-1 { left: 43.5%; top: 35%; }
+.transfer-slot-2 { left: 65%;   top: 35%; }
+
+/* --- Persistent instruction label above transfer cards --- */
+
+#transfer-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 22%;
+    z-index: 10;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 2.2cqw;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* --- Drag visual states --- */
+
+.card.draggable {
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+
+.card.dragging {
+    cursor: grabbing;
+    z-index: 20;
+    opacity: 0.85;
+}
+
+/* --- Submit button --- */
+
+#submit-btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 75%;
+    padding: 1cqw 3cqw;
+    font-size: 2cqw;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    color: var(--bg-navy);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+#submit-btn:hover:not(:disabled) {
+    background: #e5e7eb;
+}
+
+#submit-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Sorting Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-area">
+
+        <!-- Instruction overlay (visible at start) -->
+        <div id="instruction-overlay">
+            <p class="instruction-text">
+                This is a card sorting game. The goal is to correctly sort the
+                bottom card with one of three possible options. Before you begin
+                the game, you will watch a demonstration.
+            </p>
+            <button class="begin-btn">Begin demonstration</button>
+        </div>
+
+        <!-- Transition overlay (hidden until demo ends) -->
+        <div id="transition-overlay" style="display:none;">
+            <p class="instruction-text">
+                Now its your turn! Click the correct card match for the card
+                at the bottom.
+            </p>
+            <button class="begin-btn">Continue</button>
+        </div>
+
+        <!-- Transfer transition overlay (hidden until card sort ends) -->
+        <div id="transfer-transition-overlay" style="display:none;">
+            <p class="instruction-text">
+                New Task! Now, you will see three cards. 
+                Your task is to move the correct card into the leftmost position. 
+                Once you have arranged the cards,
+                click the "Submit Order" button.
+            </p>
+            <button class="begin-btn">Continue</button>
+        </div>
+
+        <!-- Cards and overlays are generated dynamically by JS -->
+
+    </div>
+
+    <!-- Load order: config → shared helpers → trial logic → phase UIs → orchestrator -->
+    <script src="config.js"></script>
+    <script src="shared_ui.js"></script>
+    <script src="trial_logic.js"></script>
+    <script src="demo_ui.js"></script>
+    <script src="card_sort_ui.js"></script>
+    <script src="transfer_ui.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
