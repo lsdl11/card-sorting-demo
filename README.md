@@ -29,7 +29,7 @@ The full deck consists of 27 unique cards (3 x 3 x 3).
 
 ## Running the Game
 
-1. Open `demonstration_phase/index.html` in a modern web browser.
+1. Open `codebase/index.html` in a modern web browser.
 2. The game loads with no dependencies -- it is purely client-side HTML, CSS, and JavaScript.
 
 ### Condition Selection
@@ -51,7 +51,7 @@ At the end of the task a summary screen displays key metrics including total tri
 
 ```
 card-sorting-demo/
-  demonstration_phase/
+  codebase/
     index.html        # Entry point
     config.js         # Condition parameters
     app.js            # Phase orchestration
@@ -61,5 +61,4 @@ card-sorting-demo/
     shared_ui.js      # Shared rendering helpers
     trial_logic.js    # Trial generation logic
     styles.css        # Styling
-  reference/          # Reference materials
 ```
