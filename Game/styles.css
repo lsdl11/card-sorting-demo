@@ -288,6 +288,24 @@ html, body {
     opacity: 0.85;
 }
 
+/* --- Rotation mode (pedagogical transfer) --- */
+
+.card.rotatable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.card.rotatable:hover {
+    outline: 3px solid rgba(255, 255, 255, 0.4);
+    outline-offset: 2px;
+}
+
+.card.selected {
+    outline: 3px solid rgba(255, 215, 0, 0.9);
+    outline-offset: 3px;
+    z-index: 10;
+}
+
 /* --- Submit button --- */
 
 #submit-btn {

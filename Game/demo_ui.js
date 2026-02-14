@@ -32,6 +32,11 @@ const DemoUI = (() => {
             return el;
         });
 
+        // Pedagogical ruleOnly: incidental card appears already rotated 180°
+        if (trial.trialType === 'ruleOnly' && GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical') {
+            choiceEls[trial.incidentalIndex].style.transform = 'rotate(180deg)';
+        }
+
         // 3. Place stimulus card
         const stimEl = createCardElement(trial.stimulus, STIMULUS_POS);
         gameArea.appendChild(stimEl);
@@ -41,15 +46,16 @@ const DemoUI = (() => {
 
         await delay(PAUSE_APPEAR);
 
-        // 4. Accidental trials: move incidental card to left of slot 0
+        // 4. Accidental trials: animate incidental card
         if (trial.trialType === 'accidental') {
             const incEl = choiceEls[trial.incidentalIndex];
 
             if (GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical') {
-                // Pedagogical: smooth slide with glow highlight
+                // Pedagogical: rotate 180° CW in place with glow highlight
                 incEl.classList.add('pedagogical-glow');
-                await moveCard(incEl, INCIDENTAL_SLOT.left, INCIDENTAL_SLOT.top);
-                await delay(PAUSE_SWAP);
+                incEl.style.transition = 'transform 600ms ease-in-out';
+                incEl.style.transform  = 'rotate(180deg)';
+                await delay(600 + PAUSE_SWAP);
                 incEl.classList.remove('pedagogical-glow');
             } else {
                 // Accidental (default): instant teleport

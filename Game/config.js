@@ -85,7 +85,9 @@ const CONDITIONS = {
         INCIDENTAL_ANIMATION_CUE: 'pedagogical',
         INCIDENTAL_ATTRIBUTE: 'shape',
         INCIDENTAL_VALUE: 'Circle',
-        SORTING_RULE: 'color'
+        SORTING_RULE: 'color',
+        TRANSFER_LABEL: 'Select the correct card and use arrow keys to rotate it.',
+        TRANSFER_TRANSITION_TEXT: 'New Task! Now, you will see three cards. Click to select the correct card, then use the left and right arrow keys to rotate it into the correct position. When you are done, click the "Submit" button.'
     },
     'A_V1': {
         CONDITION_NAME: 'A(accidental)',
@@ -94,9 +96,12 @@ const CONDITIONS = {
     'A_V2': {
         CONDITION_NAME: 'A(pedagogical)',
         SKIP_DEMO: true,
+        INCIDENTAL_ANIMATION_CUE: 'pedagogical',
         INCIDENTAL_ATTRIBUTE: 'shape',
         INCIDENTAL_VALUE: 'Circle',
-        SORTING_RULE: 'color'
+        SORTING_RULE: 'color',
+        TRANSFER_LABEL: 'Select the correct card and use arrow keys to rotate it.',
+        TRANSFER_TRANSITION_TEXT: 'New Task! Now, you will see three cards. Click to select the correct card, then use the left and right arrow keys to rotate it into the correct position. When you are done, click the "Submit" button.'
     },
     'temp' : {
         SKIP_DEMO: true,

@@ -1,6 +1,8 @@
 /**
  * transfer_ui.js
- * Transfer Phase — drag-and-drop reordering interaction.
+ * Transfer Phase — two interaction modes controlled by GameConfig.INCIDENTAL_ANIMATION_CUE:
+ *   'accidental'  → drag-and-drop reordering (move incidental card to slot 0)
+ *   'pedagogical' → click-to-select + arrow-key rotation (rotate incidental card 90° CW)
  * Depends on: shared_ui.js (SharedUI), trial_logic.js (TrialLogic), config.js (GameConfig).
  *
  * Does NOT self-start — app.js calls TransferUI.run().
@@ -181,9 +183,14 @@ const TransferUI = (() => {
     /**
      * Run the Transfer Phase.
      * Resolves when the participant achieves CRITERION consecutive correct.
+     *
+     * Interaction mode is determined by GameConfig.INCIDENTAL_ANIMATION_CUE:
+     *   'accidental'  → drag-and-drop (move incidental card to leftmost slot)
+     *   'pedagogical' → click-to-select + arrow-key rotation (rotate incidental 90° CW)
      */
     async function run() {
         const gameArea = document.querySelector('.game-area');
+        const isPedagogical = GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical';
         let consecutiveCorrect = 0;   // explicitly reset — no carryover
 
         // --- Data logging (passive) ---
@@ -200,7 +207,7 @@ const TransferUI = (() => {
         // Submit button (reused across trials)
         const submitBtn = document.createElement('button');
         submitBtn.id = 'submit-btn';
-        submitBtn.textContent = 'Submit Order';
+        submitBtn.textContent = isPedagogical ? 'Submit' : 'Submit Order';
         submitBtn.style.display = 'none';
         gameArea.appendChild(submitBtn);
 
@@ -212,10 +219,9 @@ const TransferUI = (() => {
             clearCards(gameArea);
 
             // 3. Place choice cards in their slots
-            const slotMap  = [0, 1, 2];   // cardEls[i] is currently in slot slotMap[i]
-            const cardEls  = trial.slots.map((card, i) => {
+            const cardEls = trial.slots.map((card, i) => {
                 const el = createCardElement(card, TRANSFER_SLOT_POSITIONS[i]);
-                el.classList.add('draggable');
+                el.classList.add(isPedagogical ? 'rotatable' : 'draggable');
                 gameArea.appendChild(el);
                 return el;
             });
@@ -227,33 +233,105 @@ const TransferUI = (() => {
             // Force reflow
             gameArea.getBoundingClientRect();
 
-            // 4. Enable drag-and-drop
-            const dnd = enableDragAndDrop(cardEls, slotMap, gameArea);
+            let isCorrect;
+            let feedbackCardIndex;
 
-            // 5. Wait for Submit click
-            await new Promise(resolve => {
-                submitBtn.addEventListener('click', resolve, { once: true });
-            });
+            if (isPedagogical) {
+                /* -------------------------------------------------------
+                   Rotation mode: click to select, arrow keys to rotate
+                   ------------------------------------------------------- */
+                const rotations = [0, 0, 0];   // degrees per card
+                let selectedIndex = -1;
+
+                function onCardClick(e) {
+                    const idx = cardEls.indexOf(e.currentTarget);
+                    if (idx === -1) return;
+
+                    // Deselect previous
+                    if (selectedIndex !== -1) {
+                        cardEls[selectedIndex].classList.remove('selected');
+                    }
+
+                    selectedIndex = idx;
+                    cardEls[idx].classList.add('selected');
+                }
+
+                function onKeyDown(e) {
+                    if (selectedIndex === -1) return;
+
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        rotations[selectedIndex] = (rotations[selectedIndex] + 45) % 360;
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        rotations[selectedIndex] = (rotations[selectedIndex] - 45 + 360) % 360;
+                    } else {
+                        return;
+                    }
+
+                    cardEls[selectedIndex].style.transition = 'transform 200ms ease';
+                    cardEls[selectedIndex].style.transform  = `rotate(${rotations[selectedIndex]}deg)`;
+                }
+
+                cardEls.forEach(el => el.addEventListener('click', onCardClick));
+                document.addEventListener('keydown', onKeyDown);
+
+                // Wait for Submit click
+                await new Promise(resolve => {
+                    submitBtn.addEventListener('click', resolve, { once: true });
+                });
+
+                // Clean up listeners
+                cardEls.forEach(el => el.removeEventListener('click', onCardClick));
+                document.removeEventListener('keydown', onKeyDown);
+
+                // Evaluate: incidental card at 180°, all others at 0°
+                const incIdx          = trial.incidentalIndex;
+                const incidentalAt180 = rotations[incIdx] === 180;
+                const othersAt0       = rotations.every((r, i) => i === incIdx || r === 0);
+                isCorrect             = incidentalAt180 && othersAt0;
+                feedbackCardIndex    = incIdx;
+
+                // Remove selection visual
+                cardEls.forEach(el => el.classList.remove('selected'));
+
+            } else {
+                /* -------------------------------------------------------
+                   Drag mode (existing behavior)
+                   ------------------------------------------------------- */
+                const slotMap = [0, 1, 2];
+                const dnd = enableDragAndDrop(cardEls, slotMap, gameArea);
+
+                // Wait for Submit click
+                await new Promise(resolve => {
+                    submitBtn.addEventListener('click', resolve, { once: true });
+                });
+
+                dnd.destroy();
+
+                // Evaluate: does the card in slot 0 carry the incidental feature?
+                const cardInSlot0Index = slotMap.indexOf(0);
+                const cardInSlot0      = trial.slots[cardInSlot0Index];
+                const iAttr            = GameConfig.INCIDENTAL_ATTRIBUTE;
+                isCorrect              = cardInSlot0[iAttr] === GameConfig.INCIDENTAL_VALUE;
+                feedbackCardIndex      = cardInSlot0Index;
+            }
 
             // Record trial end timestamp (passive logging)
             trialEndTimes.push(performance.now());
             trialCount++;
 
-            // 6. Disable dragging and button
-            dnd.destroy();
+            // Disable button and interaction classes
             submitBtn.disabled = true;
-            cardEls.forEach(el => el.classList.remove('draggable'));
+            cardEls.forEach(el => {
+                el.classList.remove('draggable');
+                el.classList.remove('rotatable');
+            });
 
-            // 7. Evaluate: does the card in slot 0 carry the incidental feature?
-            const cardInSlot0Index = slotMap.indexOf(0);
-            const cardInSlot0      = trial.slots[cardInSlot0Index];
-            const iAttr            = GameConfig.INCIDENTAL_ATTRIBUTE;
-            const isCorrect        = cardInSlot0[iAttr] === GameConfig.INCIDENTAL_VALUE;
+            // Show feedback
+            await showFeedback(cardEls[feedbackCardIndex], isCorrect);
 
-            // 8. Show feedback on the card that is in slot 0
-            await showFeedback(cardEls[cardInSlot0Index], isCorrect);
-
-            // 9. Update streak
+            // Update streak
             if (isCorrect) {
                 consecutiveCorrect++;
             } else {
@@ -268,11 +346,11 @@ const TransferUI = (() => {
 
         // Compute derived variables
         const tHit = trialCount;                // 1-indexed trial where criterion was met
-        const k0   = tHit - 5;                  // 0-indexed first trial of winning streak
+        const k0   = tHit - CRITERION;          // 0-indexed first trial of winning streak
 
         return {
             totalTransferTrials:          trialCount,
-            transfer_trials_to_criterion: tHit - 5,
+            transfer_trials_to_criterion: tHit - CRITERION,
             transfer_switch_latency_s:    +((trialEndTimes[k0] - startTime) / 1000).toFixed(3),
             transfer_phase_total_time_s:  +((trialEndTimes[trialCount - 1] - startTime) / 1000).toFixed(3)
         };

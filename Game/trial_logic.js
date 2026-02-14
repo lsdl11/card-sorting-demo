@@ -82,7 +82,10 @@ const TrialLogic = (() => {
 
             let initialSlots;
 
-            if (trialType === 'ruleOnly') {
+            if (GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical') {
+                // Pedagogical: incidental card can be in any of the 3 slots
+                initialSlots = shuffle([incidental, shuffled[0], shuffled[1]]);
+            } else if (trialType === 'ruleOnly') {
                 // Incidental card already in slot 0 (leftmost). No movement.
                 initialSlots = [incidental, shuffled[0], shuffled[1]];
             } else {
