@@ -29,25 +29,23 @@ const TransferUI = (() => {
        ================================================================ */
 
     /**
-     * Show brief visual feedback on the card in slot 0.
-     *   correct  → green outline + checkmark
-     *   incorrect → red outline + X
+     * Show brief text feedback above the submit button.
+     *   correct   → green "✓ Correct"
+     *   incorrect → red   "✗ Incorrect"
      */
-    async function showFeedback(cardEl, isCorrect) {
-        const cls  = isCorrect ? 'card-correct' : 'card-incorrect';
-        const icon = isCorrect ? '\u2713' : '\u2717';   // ✓ or ✗
+    async function showFeedback(gameArea, isCorrect) {
+        const text  = isCorrect ? '\u2713 Correct' : '\u2717 Incorrect';
+        const color = isCorrect ? '#22c55e' : '#ef4444';
 
-        cardEl.classList.add(cls);
-
-        const iconEl = document.createElement('div');
-        iconEl.className = 'feedback-icon';
-        iconEl.textContent = icon;
-        cardEl.appendChild(iconEl);
+        const msgEl = document.createElement('div');
+        msgEl.id = 'transfer-feedback-msg';
+        msgEl.textContent = text;
+        msgEl.style.color = color;
+        gameArea.appendChild(msgEl);
 
         await delay(FEEDBACK_DURATION);
 
-        cardEl.classList.remove(cls);
-        iconEl.remove();
+        msgEl.remove();
     }
 
     /* ================================================================
@@ -234,7 +232,6 @@ const TransferUI = (() => {
             gameArea.getBoundingClientRect();
 
             let isCorrect;
-            let feedbackCardIndex;
 
             if (isPedagogical) {
                 /* -------------------------------------------------------
@@ -289,8 +286,7 @@ const TransferUI = (() => {
                 const incIdx          = trial.incidentalIndex;
                 const incidentalAt180 = rotations[incIdx] === 180;
                 const othersAt0       = rotations.every((r, i) => i === incIdx || r === 0);
-                isCorrect             = incidentalAt180 && othersAt0;
-                feedbackCardIndex    = incIdx;
+                isCorrect = incidentalAt180 && othersAt0;
 
                 // Remove selection visual
                 cardEls.forEach(el => el.classList.remove('selected'));
@@ -313,8 +309,7 @@ const TransferUI = (() => {
                 const cardInSlot0Index = slotMap.indexOf(0);
                 const cardInSlot0      = trial.slots[cardInSlot0Index];
                 const iAttr            = GameConfig.INCIDENTAL_ATTRIBUTE;
-                isCorrect              = cardInSlot0[iAttr] === GameConfig.INCIDENTAL_VALUE;
-                feedbackCardIndex      = cardInSlot0Index;
+                isCorrect = cardInSlot0[iAttr] === GameConfig.INCIDENTAL_VALUE;
             }
 
             // Record trial end timestamp (passive logging)
@@ -329,7 +324,7 @@ const TransferUI = (() => {
             });
 
             // Show feedback
-            await showFeedback(cardEls[feedbackCardIndex], isCorrect);
+            await showFeedback(gameArea, isCorrect);
 
             // Update streak
             if (isCorrect) {

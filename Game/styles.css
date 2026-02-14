@@ -333,6 +333,21 @@ html, body {
     cursor: default;
 }
 
+/* --- Transfer feedback message (above submit button) --- */
+
+#transfer-feedback-msg {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 68%;
+    z-index: 10;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 2.2cqw;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
 /* ============================================================
    Results display (done screen)
    ============================================================ */
