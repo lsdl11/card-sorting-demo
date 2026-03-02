@@ -67,7 +67,7 @@ const _DEFAULT_CONFIG = {
 
     DEMO_LABEL:      'Watch carefully and learn the rule.',
     TRANSFER_LABEL:  'Drag the correct card to the leftmost position.',
-    INTRO_TEXT:       'This is a card sorting game. Before you begin the game, you will watch a demonstration.',
+    INTRO_TEXT:       'This is a card sorting game. The goal of the game is to match the card on the bottom with a card on the top row. Before you begin the game, you will watch a demonstration.',
     SORT_TRANSITION_TEXT:     'Now its your turn! Click the correct card match for the card at the bottom.',
     TRANSFER_TRANSITION_TEXT: 'New Task! You will now see three cards. Your task is to move the correct card into the leftmost position. Once you have arranged the cards, click the "Submit Order" button.'
 };
