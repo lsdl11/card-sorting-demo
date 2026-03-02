@@ -261,7 +261,7 @@ const TransferUI = (() => {
                         rotations[selectedIndex] = (rotations[selectedIndex] + 45) % 360;
                     } else if (e.key === 'ArrowLeft') {
                         e.preventDefault();
-                        rotations[selectedIndex] = (rotations[selectedIndex] - 45 + 360) % 360;
+                        rotations[selectedIndex] = (rotations[selectedIndex] - 45 ) % 360;
                     } else {
                         return;
                     }

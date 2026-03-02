@@ -79,7 +79,7 @@
         done.id = 'done-overlay';
 
         done.innerHTML = [
-            '<p class="instruction-text">Task complete.</p>',
+            '<p class="instruction-text">Task complete!</p>',
             '<table class="results-table">',
             `<tr><td>Total trials</td><td>${totalTrials}</td></tr>`,
             `<tr><td>Card sort trials</td><td>${cardSortResult.trialCount}</td></tr>`,
@@ -88,7 +88,8 @@
             `<tr><td>Trials to criterion (transfer)</td><td>${transferResult.transfer_trials_to_criterion}</td></tr>`,
             `<tr><td>Total transfer phase time</td><td>${transferResult.transfer_phase_total_time_s} s</td></tr>`,
             '</table>',
-            '<button id="download-csv-btn">Download CSV</button>'
+            '<button id="download-csv-btn">Download CSV</button>',
+            '<p class="submission-text">Download the CSV file and submit the file to this link: <a href="https://forms.gle/EwLqGfJ4Kdqi4Y3U7" target="_blank" rel="noopener">https://forms.gle/EwLqGfJ4Kdqi4Y3U7</a></p>'
         ].join('\n');
 
         gameArea.appendChild(done);

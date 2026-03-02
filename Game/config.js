@@ -18,7 +18,7 @@
 const _DEFAULT_CONFIG = {
 
     /* --- Behavioral parameters --- */
-    CONDITION_NAME: 'NA(accidental)',
+    CONDITION_NAME: 'NS x A',
 
     /** Valid values: 'color' | 'shape' | 'number' */
     SORTING_RULE: 'number',
@@ -67,9 +67,9 @@ const _DEFAULT_CONFIG = {
 
     DEMO_LABEL:      'Watch carefully and learn the rule.',
     TRANSFER_LABEL:  'Drag the correct card to the leftmost position.',
-    INTRO_TEXT:       'This is a card sorting game. The goal is to correctly sort the bottom card with one of three possible options. Before you begin the game, you will watch a demonstration.',
+    INTRO_TEXT:       'This is a card sorting game. Before you begin the game, you will watch a demonstration.',
     SORT_TRANSITION_TEXT:     'Now its your turn! Click the correct card match for the card at the bottom.',
-    TRANSFER_TRANSITION_TEXT: 'New Task! Now, you will see three cards. Your task is to move the correct card into the leftmost position. Once you have arranged the cards, click the "Submit Order" button.'
+    TRANSFER_TRANSITION_TEXT: 'New Task! You will now see three cards. Your task is to move the correct card into the leftmost position. Once you have arranged the cards, click the "Submit Order" button.'
 };
 
 /* =============================================================
@@ -81,27 +81,27 @@ const _DEFAULT_CONFIG = {
 const CONDITIONS = {
     'NA_V1': {},    // default config, no overrides
     'NA_V2': {
-        CONDITION_NAME: 'NA(pedagogical)',
+        CONDITION_NAME: 'NS x P',
         INCIDENTAL_ANIMATION_CUE: 'pedagogical',
         INCIDENTAL_ATTRIBUTE: 'shape',
         INCIDENTAL_VALUE: 'Circle',
         SORTING_RULE: 'color',
-        TRANSFER_LABEL: 'Select the correct card and use arrow keys to rotate it.',
-        TRANSFER_TRANSITION_TEXT: 'New Task! Now, you will see three cards. Click to select the correct card, then use the left and right arrow keys to rotate it into the correct position. When you are done, click the "Submit" button.'
+        TRANSFER_LABEL: 'Select the correct card and use the right arrow key to rotate it.',
+        TRANSFER_TRANSITION_TEXT: 'New Task! You will now see three cards. Your task is to select the correct card, then use the right arrow key to rotate it upside down. When you are done, click the "Submit" button.'
     },
     'A_V1': {
-        CONDITION_NAME: 'A(accidental)',
+        CONDITION_NAME: 'S x A',
         SKIP_DEMO: true
     },
     'A_V2': {
-        CONDITION_NAME: 'A(pedagogical)',
+        CONDITION_NAME: 'S x P',
         SKIP_DEMO: true,
         INCIDENTAL_ANIMATION_CUE: 'pedagogical',
         INCIDENTAL_ATTRIBUTE: 'shape',
         INCIDENTAL_VALUE: 'Circle',
         SORTING_RULE: 'color',
-        TRANSFER_LABEL: 'Select the correct card and use arrow keys to rotate it.',
-        TRANSFER_TRANSITION_TEXT: 'New Task! Now, you will see three cards. Click to select the correct card, then use the left and right arrow keys to rotate it into the correct position. When you are done, click the "Submit" button.'
+        TRANSFER_LABEL: 'Select the correct card and use the right arrow key to rotate it.',
+        TRANSFER_TRANSITION_TEXT: 'New Task! You will now see three cards. Your task is to select the correct card, then use the right arrow key to rotate it upside down. When you are done, click the "Submit" button.'
     },
     'temp' : {
         SKIP_DEMO: true,

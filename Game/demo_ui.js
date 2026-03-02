@@ -13,9 +13,18 @@ const DemoUI = (() => {
     } = SharedUI;
 
     /* Timing (ms) */
-    const PAUSE_APPEAR  = 1000;
-    const PAUSE_SWAP    = 500;
-    const PAUSE_SORT    = 1500;
+    const PAUSE_APPEAR  = 1500;
+    const PAUSE_SWAP    = 1500;
+    const PAUSE_SORT    = 800;
+
+    /* Dealing animation constants */
+    const DEAL_ORIGIN   = { left: '50%', top: '-50%' };
+    const DEAL_DURATION = 350;
+    const DEAL_STAGGER  = 0;
+
+    /* Sweep-off animation constants */
+    const SWEEP_LEFT    = '-20%';
+    const SWEEP_DURATION = 800;
 
     /* ================================================================
        Trial animation
@@ -25,51 +34,69 @@ const DemoUI = (() => {
         // 1. Clear any cards from the previous trial
         clearCards(gameArea);
 
-        // 2. Place choice cards in their initial slots
-        const choiceEls = trial.initialSlots.map((card, slot) => {
-            const el = createCardElement(card, SLOT_POSITIONS[slot]);
+        // 2. Create choice cards at the off-screen deal origin
+        const choiceEls = trial.initialSlots.map((card) => {
+            const el = createCardElement(card, DEAL_ORIGIN);
             gameArea.appendChild(el);
             return el;
         });
 
-        // Pedagogical ruleOnly: incidental card appears already rotated 180°
         if (trial.trialType === 'ruleOnly' && GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical') {
             choiceEls[trial.incidentalIndex].style.transform = 'rotate(180deg)';
         }
 
-        // 3. Place stimulus card
-        const stimEl = createCardElement(trial.stimulus, STIMULUS_POS);
+        // 3. Create stimulus card at the off-screen deal origin
+        const stimEl = createCardElement(trial.stimulus, DEAL_ORIGIN);
         gameArea.appendChild(stimEl);
 
-        // Force reflow so positions are committed before transitions fire
+        // Force reflow so the initial off-screen positions are committed
         gameArea.getBoundingClientRect();
+
+        // 4. Deal choice cards one by one, left to right
+        for (let i = 0; i < choiceEls.length; i++) {
+            await moveCard(choiceEls[i], SLOT_POSITIONS[i].left, SLOT_POSITIONS[i].top, DEAL_DURATION);
+            if (i < choiceEls.length - 1) await delay(DEAL_STAGGER);
+        }
+
+        // 5. Deal the stimulus card
+        await delay(DEAL_STAGGER);
+        await moveCard(stimEl, STIMULUS_POS.left, STIMULUS_POS.top, DEAL_DURATION);
 
         await delay(PAUSE_APPEAR);
 
-        // 4. Accidental trials: animate incidental card
+        // 6. Accidental trials: animate incidental card
         if (trial.trialType === 'accidental') {
             const incEl = choiceEls[trial.incidentalIndex];
 
             if (GameConfig.INCIDENTAL_ANIMATION_CUE === 'pedagogical') {
-                // Pedagogical: rotate 180° CW in place with glow highlight
                 incEl.classList.add('pedagogical-glow');
-                incEl.style.transition = 'transform 600ms ease-in-out';
+                await delay(600 + PAUSE_SWAP);
+                incEl.style.transition = 'transform 1250ms ease-in-out';
                 incEl.style.transform  = 'rotate(180deg)';
                 await delay(600 + PAUSE_SWAP);
                 incEl.classList.remove('pedagogical-glow');
+                await delay(PAUSE_SWAP);
             } else {
-                // Accidental (default): instant teleport
+                incEl.style.transition = 'none';
                 incEl.style.left = INCIDENTAL_SLOT.left;
                 incEl.style.top  = INCIDENTAL_SLOT.top;
                 await delay(PAUSE_SWAP);
             }
         }
 
-        // 5. Sort: move stimulus to the correct choice card's current position
+        // 7. Sort: move stimulus to the correct choice card's current position
         const targetEl = choiceEls[trial.correctChoiceIndex];
         await moveCard(stimEl, targetEl.style.left, targetEl.style.top);
 
         await delay(PAUSE_SORT);
+
+        // 8. Sweep all cards off-screen to the left simultaneously
+        const allCards = gameArea.querySelectorAll('.card');
+        allCards.forEach(el => {
+            el.style.transition = `left ${SWEEP_DURATION}ms ease-in`;
+            el.style.left = SWEEP_LEFT;
+        });
+        await delay(1250);
     }
 
     /* ================================================================

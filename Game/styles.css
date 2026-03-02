@@ -15,8 +15,8 @@
     --card-bg:           #ffffff;
     --card-border-color: transparent;
     --card-border-width: 0px;
-    --card-radius:       12px;
-    --card-width:        13%;
+    --card-radius:       10px;
+    --card-width:        12%;
 
     --color-red:   #ef4444;
     --color-blue:  #4a8ce8;
@@ -47,6 +47,7 @@ html, body {
 
     /* Allow cqw units inside for proportional sizing */
     container-type: inline-size;
+    overflow: hidden;
 }
 
 /* === Card base === */
@@ -95,8 +96,8 @@ html, body {
 }
 
 /* Shape size varies by count to match reference proportions */
-.count-1 .shape { width: 55%; }
-.count-2 .shape { width: 42%; }
+.count-1 .shape { width: 38%; }
+.count-2 .shape { width: 38%; }
 .count-3 .shape { width: 38%; }
 
 /* === Pedagogical glow (used during demo incidental slide) === */
@@ -388,4 +389,22 @@ html, body {
 
 #download-csv-btn:hover {
     background: #e5e7eb;
+}
+
+.submission-text {
+    margin-top: 2cqw;
+    font-size: 1.5cqw;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #d1d5db;
+    text-align: center;
+    max-width: 80%;
+}
+
+.submission-text a {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+.submission-text a:hover {
+    color: #bfdbfe;
 }
