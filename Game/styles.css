@@ -353,6 +353,33 @@ html, body {
    Results display (done screen)
    ============================================================ */
 
+.participant-id-label {
+    margin-top: 1.5cqw;
+    color: #d1d5db;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.6cqw;
+    text-align: center;
+}
+
+.participant-id {
+    margin-top: 0.5cqw;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2cqw;
+    font-weight: 600;
+    text-align: center;
+    user-select: all;
+    letter-spacing: 0.05em;
+}
+
+.participant-id-hint {
+    margin-top: 0.4cqw;
+    color: #fbbf24;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.4cqw;
+    text-align: center;
+}
+
 .results-table {
     margin-top: 2cqw;
     border-collapse: collapse;
