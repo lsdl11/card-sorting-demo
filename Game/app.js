@@ -95,9 +95,16 @@
         }
 
         lines.push(
-            
             '<button id="download-csv-btn">Download CSV</button>',
-            '<p class="submission-text">Data submission instructions: Copy your Participant ID and download the CSV file. Submit both to this link: <a href="https://form.jotform.com/260614811910046" target="_blank" rel="noopener">https://form.jotform.com/260614811910046</a></p>'
+            '<div class="submission-instructions">',
+            '  <p class="submission-heading">SUBMISSION INSTRUCTIONS</p>',
+            '  <ol class="submission-steps">',
+            '    <li>Copy your <strong>Participant ID</strong>.</li>',
+            '    <li>Click the <strong>"Download CSV"</strong> button above to save your results file.</li>',
+            '    <li>Open the submission form:<br><a href="https://form.jotform.com/260614811910046" target="_blank" rel="noopener">https://form.jotform.com/260614811910046</a></li>',
+            '    <li>Paste your Participant ID and upload the downloaded CSV file, then submit.</li>',
+            '  </ol>',
+            '</div>'
         );
 
         done.innerHTML = lines.join('\n');
